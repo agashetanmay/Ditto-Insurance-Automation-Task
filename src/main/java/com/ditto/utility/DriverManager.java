@@ -27,7 +27,9 @@ private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 	}
 	
 	public static void quitDriver() {
+	if (getDriver() != null) {
 		getDriver().quit();
 		driver.remove();
+		}
 	}
 }

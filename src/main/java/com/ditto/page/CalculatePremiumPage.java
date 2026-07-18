@@ -39,7 +39,7 @@ public class CalculatePremiumPage extends BasePage {
     }
     
     public void enterTheInsuranceCoverAmount(int Amount) {
-    	WebElement slider =	wait.until(ExpectedConditions.visibilityOfElementLocated(COVER_AMOUNT_SLIDER));
+    	WebElement slider =	getWait().until(ExpectedConditions.visibilityOfElementLocated(COVER_AMOUNT_SLIDER));
     	 int sliderWidth = slider.getSize().getWidth();
          int minValue = 1000000;   // ₹10 L (10 lakh)
          int maxValue = 20000000;  // ₹2 Cr (2 crore)
@@ -59,7 +59,7 @@ public class CalculatePremiumPage extends BasePage {
     }
     
     public void clickOnAddOnAndRiderCheckBox() {
-       WebElement addOnAndRiderComponent = wait.until(ExpectedConditions.elementToBeClickable(ADDON_AND_RIDER_LOCATOR));
+       WebElement addOnAndRiderComponent = getWait().until(ExpectedConditions.elementToBeClickable(ADDON_AND_RIDER_LOCATOR));
        WebElement checkbox = addOnAndRiderComponent.findElement(ADDON_AND_RIDER_CHECKBOX_LOCATOR);
        clickOn(checkbox);
        clickOn( POPUP_CHECKBOX_LOCATOR);

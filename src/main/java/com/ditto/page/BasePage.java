@@ -21,62 +21,67 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.ditto.utility.DriverManager;
 
 public class BasePage {
-	public WebDriver driver;
-	public JavascriptExecutor js;
-	public WebDriverWait wait;
-	public Actions action;
-	public TakesScreenshot screenshot;
 	
-	public BasePage() {
-		driver = DriverManager.getDriver();
-		js = (JavascriptExecutor) driver;
-		wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-		action = new Actions(driver);
-		screenshot= (TakesScreenshot) driver;
+	protected WebDriver getDriver() {
+        return DriverManager.getDriver();
+    }
+	
+    // Helper to get a fresh WebDriverWait for the current thread
+    protected WebDriverWait getWait() {
+        return new WebDriverWait(getDriver(), Duration.ofSeconds(20));
+    }
 
-	}
+   
+    protected JavascriptExecutor getJsExecutor() {
+        return (JavascriptExecutor) getDriver();
+    }
+    
+    protected Actions getAction() {
+        return new Actions(getDriver());
+    }
+//--------------------------------------------------------------------------------------------------------//
+
+    public void clickOn(By locator) {
+        WebElement element = getWait().until(ExpectedConditions.elementToBeClickable(locator));
+        getJsExecutor().executeScript("arguments[0].scrollIntoView", element);
+        element.click();
+    }
 
 	public void clickOn(WebElement element) {
-		js.executeScript("arguments[0].scrollIntoView", element);
-		element.click();
-
-	}
-
-	public void clickOn(By locator) {
-		WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
-		js.executeScript("arguments[0].scrollIntoView", element);
+		getJsExecutor().executeScript("arguments[0].scrollIntoView", element);
 		element.click();
 
 	}
 
 	public void clickUsingJsExecutor(By locator) {
-		WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
-		js.executeScript("arguments[0].scrollIntoView", element);
-		js.executeScript("arguments[0].click()", element);
+		WebElement element =  getWait().until(ExpectedConditions.elementToBeClickable(locator));
+		getJsExecutor().executeScript("arguments[0].scrollIntoView", element);
+		getJsExecutor().executeScript("arguments[0].click()", element);
 
 	}
 	
 	public void enterText(By locator, String textToEnter) {
-		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+		WebElement element =  getWait().until(ExpectedConditions.visibilityOfElementLocated(locator));
 		element.sendKeys(textToEnter);
 	}
 	
 	public void enterText(By locator, int textToEnter) {
-		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+		WebElement element =  getWait().until(ExpectedConditions.visibilityOfElementLocated(locator));
 		element.sendKeys(String.valueOf(textToEnter));
 	}
 	
 	public void scrollTheSlider(By locator, int xOffset) {
-		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-		action.clickAndHold(element).moveByOffset(xOffset,0).release().build().perform();
+		WebElement element = getWait().until(ExpectedConditions.visibilityOfElementLocated(locator));
+		getAction().clickAndHold(element).moveByOffset(xOffset,0).release().build().perform();
 	}
 	
 	public List<WebElement> getAllElements(By locator) {
-	List<WebElement> elementList = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
+	List<WebElement> elementList =  getWait().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
 		return elementList;
 	}
 	
 	public String takeScreenshot(String name) {	
+		TakesScreenshot screenshot = (TakesScreenshot) getDriver();
 		Date date = new Date();
 		SimpleDateFormat format = new SimpleDateFormat("HH-mm-ss");
 		String timeStamp = format.format(date);

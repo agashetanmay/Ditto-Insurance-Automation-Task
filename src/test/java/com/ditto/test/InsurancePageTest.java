@@ -69,5 +69,5 @@ public class InsurancePageTest extends BaseTest {
 		Assert.assertEquals( totalPremium, expectedTotalPremium, "something is missing.. total premium "+totalPremium+" does not match with expeced total premium "+expectedTotalPremium+"");
 		 ExtentReportUtility.getTest().log(Status.PASS, "total premium "+totalPremium+" with expeced total premium "+expectedTotalPremium+"");  
 	}
-	
+
 }
