@@ -1,0 +1,5 @@
+# Ignore TestNG output directory
+/test-output/
+
+# Ignore test report file
+report.html
